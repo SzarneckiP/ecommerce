@@ -1,6 +1,6 @@
 export default {
-    name: 'product',
-    title: 'Product',
+    name: 'products',
+    title: 'Products',
     type: 'document',
     fields: [
         {
@@ -35,6 +35,12 @@ export default {
             name: 'details',
             title: 'Details',
             type: 'string',
+        },
+        {
+            name: 'description',
+            title: 'Product Description',
+            type: 'array',
+            of: [{ type: 'block' }]
         },
     ]
 }
