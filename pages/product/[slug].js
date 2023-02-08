@@ -4,13 +4,15 @@ import { AiOutlineMouse, AiOutlinePlus, AiOutlineMinus, AiFillStar, AiOutlineSta
 import { Product } from '../../components'
 
 import { PortableText } from '@portabletext/react'
+import { useStateContext } from '../../context/StateContext'
 
 const ProductDetails = ({ products, product }) => {
 
     const { image, name, details, price, description } = product
 
     const [index, setIndex] = useState(0)
-    // console.log(description);
+    const { incQty, decQty, qty, onAdd } = useStateContext()
+
     return (
         <div>
             <div className='product-detail-container'>
@@ -56,16 +58,16 @@ const ProductDetails = ({ products, product }) => {
                     <div className='quantity'>
                         <h3>Quantity: </h3>
                         <p className='quantity-desc'>
-                            <span className='minus' onClick=''><AiOutlineMinus /></span>
-                            <span className='num' onClick=''>0</span>
-                            <span className='plus' onClick=''><AiOutlinePlus /></span>
+                            <span className='minus' onClick={decQty}><AiOutlineMinus /></span>
+                            <span className='num'>{qty}</span>
+                            <span className='plus' onClick={incQty}><AiOutlinePlus /></span>
                         </p>
                     </div>
                     <div className='buttons'>
                         <button
                             type='button'
                             className='add-to-cart'
-                            onClick=''
+                            onClick={() => onAdd(product, qty)}
                         >
                             Add to Cart
                         </button>
@@ -116,9 +118,9 @@ export const getStaticPaths = async () => {
 
 export const getStaticProps = async ({ params: { slug } }) => {
     const query = `*[_type == "products" && slug.current == '${slug}'][0]`
-    const productsQuery = '*[_type == "products"]'
-
     const product = await client.fetch(query)
+
+    const productsQuery = '*[_type == "products"]'
     const products = await client.fetch(productsQuery)
 
     return {
