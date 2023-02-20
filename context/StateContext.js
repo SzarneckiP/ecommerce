@@ -14,7 +14,7 @@ export const StateContext = ({ children }) => {
     let index
 
     const totalPriceFixed = totalPrice.toFixed(2)
-    console.log('cartItemsContext: ', cartItems)
+
     const onAdd = (product, quantity) => {
         const checkProductInCart = cartItems.find((item) => item._id === product._id)
 
@@ -49,11 +49,9 @@ export const StateContext = ({ children }) => {
 
     const toggleCartItemQuantity = (id, value) => {
         foundProduct = cartItems.find((item) => item._id === id)
-        console.log('foundProduct:', foundProduct)
         index = cartItems.findIndex((product) => product._id === id)
-        console.log('index:', index)
         const newCartItem = cartItems.filter((item) => item._id !== id)
-        console.log('newCartItem:', newCartItem)
+
         if (value === 'inc') {
             setCartItems([...newCartItem, { ...foundProduct, quantity: foundProduct.quantity + 1 }])
             setTotalPrice((prevTotalPrice) => prevTotalPrice + foundProduct.price)
@@ -93,6 +91,9 @@ export const StateContext = ({ children }) => {
                 onAdd,
                 toggleCartItemQuantity,
                 onRemove,
+                setCartItems,
+                setTotalPrice,
+                setTotalQuantities
             }}
         >
             {children}
